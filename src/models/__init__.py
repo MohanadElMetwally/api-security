@@ -82,3 +82,7 @@ class Base:
             return (*constraints, existing_args)
 
         return (*existing_args, *constraints)
+
+
+from .users import Users  # noqa
+from .notes import Notes  # noqa
