@@ -6,6 +6,8 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    DEBUG: bool = False
+
     # +----------------+
     # |    Database    |
     # +----------------+
@@ -40,3 +42,5 @@ class Settings(BaseSettings):
 
         connection.update({"query": urlencode(connection["query"])})
         return MultiHostUrl.build(**connection).unicode_string()
+
+settings = Settings()
