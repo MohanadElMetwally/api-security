@@ -7,13 +7,13 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from core.config import settings
+from api_security.core.config import settings
 
 engine: AsyncEngine = create_async_engine(
     url=settings.SQLALCHEMY_DATABASE_URI,
     echo=settings.DEBUG,
     pool_size=10,
-    max_over_flow=20,
+    max_overflow=20,
     future=True,
     pool_recycle=3600,
     connect_args={
