@@ -20,5 +20,5 @@ class NotesPublic(BaseModel):
     notes: list[NotePublic] = Field(default_factory=list)
 
     @computed_field
-    def count(self):
+    def count(self) -> int:
         return len(self.notes)

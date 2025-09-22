@@ -29,5 +29,5 @@ class UsersPublic(BaseModel):
     users: list[UserPublic] = Field(default_factory=list)
 
     @computed_field
-    def count(self):
+    def count(self) -> int:
         return len(self.users)
