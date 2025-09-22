@@ -86,3 +86,5 @@ class Base:
 
 from .users import Users  # noqa
 from .notes import Notes  # noqa
+
+__all__ = ("Users", "Notes")
