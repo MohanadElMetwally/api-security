@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.db import get_db
+from api_security.core.db import get_db
 
 
 async def get_session_dep() -> AsyncGenerator[AsyncSession, None]:

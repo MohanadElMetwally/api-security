@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, computed_field
 
-from src.core.enums.roles import UserRoles
+from api_security.core.enums.roles import UserRoles
 
 
 class UserCreate(BaseModel):

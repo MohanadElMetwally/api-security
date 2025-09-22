@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from models.base import PkIntIdMixin
-from src.models import Base
+from api_security.models import Base
 
 
 class Notes(Base, PkIntIdMixin):

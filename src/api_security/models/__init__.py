@@ -18,7 +18,7 @@ from sqlalchemy.dialects.mssql import DATETIME2
 from sqlalchemy.orm import Mapped, declared_attr, registry
 from sqlalchemy.types import BIGINT
 
-from src.utils.serialization import to_snakecase
+from api_security.utils.serialization import to_snakecase
 
 NAMING_CONVENTIONS: Final[Mapping[str, str]] = MappingProxyType(
     {

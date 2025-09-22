@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Mapped, relationship
 
-from src._typing.sqla import bit0, bit1
-from src.models import Base
-from src.models.base import PkIntIdMixin
-from src.core.enums.roles import UserRoles
+from api_security._typing.sqla import bit0, bit1
+from api_security.models import Base
+from api_security.models.base import PkIntIdMixin
+from api_security.core.enums.roles import UserRoles
 
 class Users(Base, PkIntIdMixin):
     full_name: Mapped[str]

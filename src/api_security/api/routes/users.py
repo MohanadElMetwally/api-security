@@ -4,8 +4,8 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from schemas.users import UserPublic, UsersPublic
-from src.api.deps import SessionDep
-from src.models import Users
+from api_security.api.deps import SessionDep
+from api_security.models import Users
 
 router = APIRouter()
 
