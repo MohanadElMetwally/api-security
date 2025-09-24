@@ -27,6 +27,78 @@ dependencies = [
     "typing-inspection==0.4.1",
 ]
 
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+unfixable = []
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "D",   # pydocstyle
+    "B",   # flake8-bugbear
+    "W",   # pycodestyle warnings
+    "C4",  # flake8-comprehensions
+    "PIE", # flake8-pie
+    "ANN", # type annotations
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "RUF", # ruff specific rules
+    "ISC", #implicit string concat
+    "INP", #implicit namespace package
+    "RSE", #raise exception parantheses check
+    # "RET", #flake8-return check
+    "SIM", #flake8-simplify check
+    # enable when we have access to a github project board
+    # "TD",  # todos
+    # "FIX", # fixme
+]
+ignore = [
+    "B008",   # Do not perform function call in argument defaults
+    "D203",   # 1 blank line required before class docstring
+    "D212",   # Multi-line docstring summary should start at the first line
+    "D205",   # 1 blank line required between summary line and description
+    "D100",   # allow missing docstring for public functions
+    "D103",   # allow missing docstring for public modules
+    "ANN401", # allow dynamically typed expressions (typing.Any)
+    # TODO: +--- Remove post-completion of the MVP and resolve codebase ---+#
+    "D102", # allow missing docstring in public method
+    "D101", # allow missing docstring in public class
+    "D105", # allow missing docstring in magic method
+    "D106", # allow missing docstring in public nested class
+    # "D104", # allow missing docstring in public package
+    #-----------------------#
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "INP", "TD", "ERA001", "RUF"]
+"notebooks/**" = ["D", "INP", "ERA001", "RUF"]
+"*_test.py" = ["D"]
+"*.ipynb" = ["E501"]
+"src/school_ai/alembic/versions/*" = ["D415", "INP", "E501"]
+"src/school_ai/core/exceptions/*" = ["D107"]
+
+
 [build-system]
 requires = ["uv_build>=0.8.2,<0.9.0"]
 build-backend = "uv_build"
