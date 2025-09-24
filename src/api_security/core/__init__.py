@@ -1,1 +1,1 @@
-"""Core of API Security project"""
+"""Core of API Security project."""

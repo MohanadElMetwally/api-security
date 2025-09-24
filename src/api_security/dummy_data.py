@@ -2,17 +2,29 @@ import asyncio
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api_security import schemas, crud
+from api_security import crud, schemas
 from api_security.core.db import engine, get_db
 from api_security.core.enums.roles import UserRoles
 
 PASS = "12345678"
 
 
-async def init_users(session: AsyncSession):
+async def init_users(session: AsyncSession) -> None:
     users = [
-        {"full_name": "Honda", "password": PASS, "role": UserRoles.SUPERUSER},
-        {"full_name": "Basyone", "password": PASS, "role": UserRoles.USER},
+        {
+            "full_name": "MohanadElMetwally",
+            "username": "Honda",
+            "email": "honda@gmail.com",
+            "password": PASS,
+            "role": UserRoles.SUPERUSER,
+        },
+        {
+            "full_name": "BasyoneAbdElSalam",
+            "username": "Basyone",
+            "email": "basyone@gmail.com",
+            "password": PASS,
+            "role": UserRoles.USER,
+        },
     ]
     for user in users:
         user_data = schemas.UserCreate.model_validate(user)

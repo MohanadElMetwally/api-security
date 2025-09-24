@@ -50,7 +50,7 @@ class Settings(BaseSettings):
 
         connection.update({"query": urlencode(connection["query"])})
         return MultiHostUrl.build(**connection).unicode_string()
-    
+
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",
         env_ignore_empty=True,

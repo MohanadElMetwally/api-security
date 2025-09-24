@@ -1,3 +1,5 @@
+"""Models package."""
+
 import datetime as dt
 import types
 from collections.abc import Mapping
@@ -87,4 +89,4 @@ class Base:
 from .users import Users  # noqa
 from .notes import Notes  # noqa
 
-__all__ = ("Users", "Notes")
+__all__ = ("Users", "Notes")  # noqa

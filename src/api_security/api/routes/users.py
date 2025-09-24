@@ -3,9 +3,9 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
-from schemas.users import UserPublic, UsersPublic
 from api_security.api.deps import SessionDep
 from api_security.models import Users
+from api_security.schemas.users import UserPublic, UsersPublic
 
 router = APIRouter()
 

@@ -1,1 +1,1 @@
-"""Enums package"""
+"""Enums package."""

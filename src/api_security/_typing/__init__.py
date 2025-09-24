@@ -1,1 +1,1 @@
-"""Custom type hinting"""
+"""Custom type hinting."""
