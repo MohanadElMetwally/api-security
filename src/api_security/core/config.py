@@ -1,3 +1,4 @@
+import secrets
 from pathlib import Path
 from typing import Final
 from urllib.parse import urlencode
@@ -10,11 +11,15 @@ API_SECURITY_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
 SRC_ROOT: Final[Path] = API_SECURITY_ROOT.parent
 PROJECT_ROOT: Final[Path] = SRC_ROOT.parent
 
+
 class Settings(BaseSettings):
     DEBUG: bool = False
 
     PROJECT_NAME: str = "APISecurity"
     API_V1_STR: str = "/api/v1"
+
+    SECRET_KEY: str = secrets.token_urlsafe(32)
+    ACCESS_TOKEN_EXPIRE_MINUTES = 15
 
     # +----------------+
     # |    Database    |
@@ -56,5 +61,6 @@ class Settings(BaseSettings):
         env_ignore_empty=True,
         extra="ignore",
     )
+
 
 settings = Settings()
