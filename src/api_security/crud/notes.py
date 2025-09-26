@@ -3,13 +3,18 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api_security import models, schemas
 
 
-async def create_note(session: AsyncSession, note_create: schemas.NoteCreate) -> None:
-    note_data = note_create.model_dump()
+async def create_note(
+    session: AsyncSession, id: int, note_create: schemas.NoteCreatePublic
+) -> models.Notes:
+    note_data = schemas.NoteCreate.model_validate(
+        {**note_create.model_dump(), "user_id": id}
+    )
 
-    note = models.Notes(**note_data)
+    note = models.Notes(**note_data.model_dump())
     session.add(note)
     await session.commit()
     await session.refresh(note)
+    return note
 
 
 async def update_note(
