@@ -1,9 +1,12 @@
 from pydantic import BaseModel, Field, computed_field
 
 
-class NoteCreate(BaseModel):
-    user_id: int
+class NoteCreatePublic(BaseModel):
     content: str
+
+
+class NoteCreate(NoteCreatePublic):
+    user_id: int
 
 
 class NoteUpdate(BaseModel):
