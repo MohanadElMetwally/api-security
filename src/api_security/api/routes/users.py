@@ -9,7 +9,6 @@ from api_security.schemas.users import UserPublic, UsersPublic
 
 router = APIRouter()
 
-
 @router.get("/", response_model=UsersPublic)
 async def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
     stmt = select(Users).order_by(Users.id).offset(skip).limit(limit)
