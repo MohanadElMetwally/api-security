@@ -7,7 +7,7 @@ from api_security.core.config import settings
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    description=f"{settings.PROJECT_NAME} API",
+    description=f"{settings.PROJECT_NAME} Project",
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}},
     default_response_class=ORJSONResponse,
