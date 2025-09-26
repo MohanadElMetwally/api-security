@@ -1,7 +1,6 @@
 from fastapi import HTTPException, status
 
 
-# TODO: migrate to base class logic when implemented
 class UserException(HTTPException):
     """Base exception for user-related errors."""
 
