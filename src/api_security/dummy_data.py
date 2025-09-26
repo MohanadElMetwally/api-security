@@ -36,6 +36,7 @@ async def main() -> None:
         try:
             await init_users(session)
         finally:
+            await session.close()
             await engine.dispose()
 
 
