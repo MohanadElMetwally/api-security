@@ -32,4 +32,4 @@ async def login_access_token(
     if not user.is_active:
         raise UserNotActiveException
     time_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    return Token(access_token=security.create_access_token(user.id, time_expire))
+    return Token(access_token=security.create_access_token(user, time_expire))
