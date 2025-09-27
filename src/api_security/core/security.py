@@ -1,18 +1,24 @@
 from datetime import UTC, datetime, timedelta
-from typing import Any
 
 import jwt
 from passlib.context import CryptContext
 
 from api_security.core.config import settings
+from api_security.models.users import Users
+from api_security.schemas.base import UserInfo
 
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes="bcrypt", deprecated="auto")
 
 
-def create_access_token(subject: str | Any, expire_mins: timedelta) -> str:
+def create_access_token(user: Users, expire_mins: timedelta) -> str:
     expire = datetime.now(UTC) + expire_mins
-    to_encode = {"exp": expire, "sub": str(subject)}
+    jwt_subject = UserInfo.model_validate(user)
+    to_encode = {
+        "exp": expire,
+        "sub": str(jwt_subject.id),
+        **jwt_subject.model_dump(exclude={"id"})
+    }
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, ALGORITHM)
     return encoded_jwt
 
