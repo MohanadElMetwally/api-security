@@ -11,6 +11,8 @@ class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
+class TokenPayload(BaseModel):
+    sub: str
 
 class UserInfo(BaseModel):
     id: int = Field(..., alias="sub")

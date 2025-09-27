@@ -16,7 +16,7 @@ from api_security.core.exceptions.api.users import (
     UserLackPrivilegesException,
     UserNotActiveException,
 )
-from api_security.schemas.base import UserInfo
+from api_security.schemas.base import TokenPayload, UserInfo
 
 reusable_oauth = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -36,13 +36,14 @@ SessionDep = Annotated[AsyncSession, Depends(get_session_dep)]
 async def get_active_current_user(token: TokenDep) -> UserInfo:
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, [security.ALGORITHM])
-        user = UserInfo(**payload)
+        _ = TokenPayload(**payload)
     except (ValidationError, InvalidTokenError) as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"Could not validate credentials: {e}",
         ) from e
 
+    user = UserInfo(**payload)
     if not user.is_active:
         raise UserNotActiveException
 
