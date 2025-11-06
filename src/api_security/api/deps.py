@@ -15,8 +15,10 @@ from api_security.core.enums.roles import UserRoles
 from api_security.core.exceptions.api.users import (
     UserLackPrivilegesException,
     UserNotActiveException,
+    UserNotFoundException,
 )
-from api_security.schemas.base import TokenPayload, UserInfo
+from api_security.models.users import Users
+from api_security.schemas.base import TokenPayload
 
 reusable_oauth = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -33,27 +35,31 @@ async def get_session_dep() -> AsyncGenerator[AsyncSession, None]:
 SessionDep = Annotated[AsyncSession, Depends(get_session_dep)]
 
 
-async def get_active_current_user(token: TokenDep) -> UserInfo:
+async def get_active_current_user(session: SessionDep, token: TokenDep) -> Users:
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, [security.ALGORITHM])
-        _ = TokenPayload(**payload)
-    except (ValidationError, InvalidTokenError) as e:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
+        token_data = TokenPayload(**payload)
+    except (InvalidTokenError, ValidationError) as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Could not validate credentials: {e}",
+            detail="Could not validate credentials",
         ) from e
 
-    user = UserInfo(**payload)
+    user = await session.get(Users, token_data.sub)
+    if not user:
+        raise UserNotFoundException
     if not user.is_active:
         raise UserNotActiveException
 
     return user
 
 
-CurrentUser = Annotated[UserInfo, Depends(get_active_current_user)]
+CurrentUser = Annotated[Users, Depends(get_active_current_user)]
 
 
-async def get_current_active_super_user(current_user: CurrentUser) -> UserInfo:
+async def get_current_active_super_user(current_user: CurrentUser) -> Users:
     if current_user.role != UserRoles.SUPERUSER:
         raise UserLackPrivilegesException
 

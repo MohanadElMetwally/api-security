@@ -55,7 +55,7 @@ async def create_user(session: SessionDep, user_create: UserCreate) -> Any:
 async def update_me(
     session: SessionDep, current_user: CurrentUser, user_update: UserUpdate
 ) -> Message:
-    await crud.users.update_user(session, current_user.id, user_update)
+    await crud.users.update_user_me(session, current_user, user_update)
     return Message(message="Your information has been updated successfully!")
 
 
