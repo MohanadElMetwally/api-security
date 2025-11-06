@@ -1,8 +1,9 @@
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api_security import models, schemas
 from api_security.core.security import get_hashed_password, verify_hashed_password
+from api_security.models.users import Users
 
 
 async def create_user(
@@ -35,22 +36,35 @@ async def get_user_by_email(session: AsyncSession, email: str) -> models.Users |
 async def authenticate(
     session: AsyncSession, login: str, password: str
 ) -> models.Users | None:
-    user = await get_user_by_username(session, login) or await get_user_by_email(
-        session, login
+    stmt = select(models.Users).where(
+        or_(models.Users.username == login, models.Users.email == login)
     )
+    user = (await session.execute(stmt)).scalars().first()
     if not user:
         return None
-    if not verify_hashed_password(password, user.hashed_password):
-        return None
-    return user
+    return user if verify_hashed_password(password, user.hashed_password) else None
 
 
 async def update_user(
     session: AsyncSession, id: int, user_update: schemas.UserUpdate
 ) -> models.Users:
-    user = await session.get(models.Users, id)
+    user = await session.get(Users, id)
     if not user:
-        raise Exception(f"User of ID: {id} was not found.")
+        raise ValueError(f"User with id: {id} not found")
+    user_data = user_update.model_dump(exclude_unset=True)
+    for field, value in user_data.items():
+        if not hasattr(user, field):
+            continue
+        setattr(user, field, value)
+    await session.commit()
+    await session.refresh(user)
+    return user
+
+
+async def update_user_me(
+    session: AsyncSession, user_obj: Users, user_update: schemas.UserUpdate
+) -> models.Users:
+    user = user_obj
     user_data = user_update.model_dump(exclude_unset=True)
     for field, value in user_data.items():
         if not hasattr(user, field):
