@@ -1,0 +1,40 @@
+services:
+  backend:
+    image: api-security
+    restart: always
+    env_file:
+      - .env.stg
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:8000/api/v1/utils/health",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    build:
+      context: .
+
+    ports:
+    - "8000:8000"
+
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - apisecurity:/var/lib/postgresql/data
+
+volumes:
+  apisecurity:
+    driver: local
