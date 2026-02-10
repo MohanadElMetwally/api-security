@@ -47,7 +47,7 @@ async def get_active_current_user(session: SessionDep, token: TokenDep) -> Users
             detail="Could not validate credentials",
         ) from e
 
-    user = await session.get(Users, token_data.sub)
+    user = await session.get(Users, int(token_data.sub))
     if not user:
         raise UserNotFoundException
     if not user.is_active:
